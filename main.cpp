@@ -80,6 +80,26 @@ public:
         return false; // Employee not found
     }
 
+    // Promote an employee
+    bool promoteEmployee(int promoteId, const std::string& newPosition) {
+        EmployeeNode* employeeToPromote = findById(promoteId);
+        if (employeeToPromote && !newPosition.empty()) {
+            employeeToPromote->position = newPosition;
+            return true;
+        }
+        return false;
+    }
+
+    // Demote an employee
+    bool demoteEmployee(int demoteId, const std::string& newPosition) {
+        EmployeeNode* employeeToDemote = findById(demoteId);
+        if (employeeToDemote && !newPosition.empty()) {
+            employeeToDemote->position = newPosition;
+            return true;
+        }
+        return false;
+    }
+
     // Destructor to recursively delete subordinates
     ~EmployeeNode() {
         for (EmployeeNode* subordinate : subordinates) {
@@ -89,100 +109,207 @@ public:
 };
 
 int main() {
-    int main ;
-    switch (main){
-        case 1:  EmployeeNode* ceo = new EmployeeNode(1, "Alice", "CEO");
-    }
-    {
-    case /* constant-expression */:
-        /* code */
-        break;
-    
-    default:
-        break;
-    }
-    // Create employees
-    EmployeeNode* ceo = new EmployeeNode(1, "Alice", "CEO");
+    EmployeeNode* ceo = nullptr;
 
-    EmployeeNode* headOfEngineering = new EmployeeNode(2, "Bob", "Head of Engineering");
-    EmployeeNode* headOfMarketing = new EmployeeNode(3, "Eve", "Head of Marketing");
+    int operation;
+    do {
+        std::cout << "\nChoose an operation:\n";
+        std::cout << "1. Create Company\n";
+        std::cout << "2. Update Employee\n";
+        std::cout << "3. Search by Position\n";
+        std::cout << "4. Search by ID\n";
+        std::cout << "5. Delete Employee\n";
+        std::cout << "6. Display Hierarchy\n";
+        std::cout << "7. Promote Employee\n";
+        std::cout << "8. Demote Employee\n";
+        std::cout << "0. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> operation;
 
-    EmployeeNode* engineer1 = new EmployeeNode(4, "Charlie", "Engineer");
-    EmployeeNode* engineer2 = new EmployeeNode(5, "Dave", "Engineer");
-    EmployeeNode* engineer3 = new EmployeeNode(6, "Eve", "Engineer");
+        switch (operation) {
+            case 1: {
+                if (ceo) {
+                    delete ceo;
+                }
 
-    EmployeeNode* marketer1 = new EmployeeNode(7, "Fiona", "Marketer");
+                std::cout << "Enter Company details:\n";
+                int memberId;
+                std::string memberName, memberPosition;
+                std::cout << "ID: ";
+                std::cin >> memberId;
+                std::cin.ignore(); // Clear newline from input buffer
+                std::cout << "Name: ";
+                std::getline(std::cin, memberName);
+                std::cout << "Position: ";
+                std::getline(std::cin, memberPosition);
 
-    // Build hierarchy
-    ceo->addSubordinate(headOfEngineering);
-    ceo->addSubordinate(headOfMarketing);
+                ceo = new EmployeeNode(memberId, memberName, memberPosition);
 
-    headOfEngineering->addSubordinate(engineer1);
-    headOfEngineering->addSubordinate(engineer2);
-    headOfEngineering->addSubordinate(engineer3);
+                int numEmployees;
+                std::cout << "\nEnter the number of employees under the CEO: ";
+                std::cin >> numEmployees;
 
-    headOfMarketing->addSubordinate(marketer1);
+                for (int i = 0; i < numEmployees; ++i) {
+                    int id;
+                    std::string name, position;
+                    std::cout << "\nEnter details for employee " << (i + 1) << ":\n";
+                    std::cout << "ID: ";
+                    std::cin >> id;
+                    std::cin.ignore();
+                    std::cout << "Name: ";
+                    std::getline(std::cin, name);
+                    std::cout << "Position: ";
+                    std::getline(std::cin, position);
 
-    // Display hierarchy
-    std::cout << "Company Hierarchy:\n";
+                    EmployeeNode* employee = new EmployeeNode(id, name, position);
+                    ceo->addSubordinate(employee);
 
-    // Update an employee's details
-    int idToUpdate = 4;
-    std::string newName = "Charles";
-    std::string newPosition = "Senior Engineer";
+                    int numSubordinates;
+                    std::cout << "Enter the number of subordinates for " << name << ": ";
+                    std::cin >> numSubordinates;
 
-    if (ceo->updateEmployee(idToUpdate, newName, newPosition)) {
-        std::cout << "\nEmployee with ID " << idToUpdate << " has been updated.\n";
-    } else {
-        std::cout << "\nEmployee with ID " << idToUpdate << " not found.\n";
-    }
+                    for (int j = 0; j < numSubordinates; ++j) {
+                        int subId;
+                        std::string subName, subPosition;
+                        std::cout << "\nEnter details for subordinate " << (j + 1) << " of " << name << ":\n";
+                        std::cout << "ID: ";
+                        std::cin >> subId;
+                        std::cin.ignore();
+                        std::cout << "Name: ";
+                        std::getline(std::cin, subName);
+                        std::cout << "Position: ";
+                        std::getline(std::cin, subPosition);
 
-    // Display updated hierarchy
-    std::cout << "\nUpdated Company Hierarchy:\n";
-    ceo->displayHierarchy();
+                        EmployeeNode* subordinate = new EmployeeNode(subId, subName, subPosition);
+                        employee->addSubordinate(subordinate);
+                    }
+                }
 
-    // Search for employees with position "Engineer"
-    std::string positionToSearch = "Engineer";
-    std::vector<EmployeeNode*> foundEmployees;
-    ceo->findAllByPosition(positionToSearch, foundEmployees);
+                std::cout << "Company created successfully!\n";
+                break;
+            }
+            case 2: {
+                int updateId;
+                std::string newName, newPosition;
+                std::cout << "Enter ID of the employee to update: ";
+                std::cin >> updateId;
+                std::cin.ignore();
+                std::cout << "Enter new name (or leave empty): ";
+                std::getline(std::cin, newName);
+                std::cout << "Enter new position (or leave empty): ";
+                std::getline(std::cin, newPosition);
 
-    std::cout << "\nEmployees with position '" << positionToSearch << "':\n";
-    if (foundEmployees.empty()) {
-        std::cout << "No employees found with position '" << positionToSearch << "'.\n";
-    } else {
-        for (EmployeeNode* employee : foundEmployees) {
-            std::cout << "ID: " << employee->id 
-                      << ", Name: " << employee->name 
-                      << ", Position: " << employee->position << "\n";
+                if (ceo && ceo->updateEmployee(updateId, newName, newPosition)) {
+                    std::cout << "Employee updated successfully.\n";
+                } else {
+                    std::cout << "Employee not found.\n";
+                }
+                break;
+            }
+            case 3: {
+                std::string searchPosition;
+                std::cin.ignore();
+                std::cout << "Enter position to search: ";
+                std::getline(std::cin, searchPosition);
+
+                if (ceo) {
+                    std::vector<EmployeeNode*> foundEmployees;
+                    ceo->findAllByPosition(searchPosition, foundEmployees);
+
+                    std::cout << "\nEmployees with position '" << searchPosition << "':\n";
+                    if (foundEmployees.empty()) {
+                        std::cout << "No employees found.\n";
+                    } else {
+                        for (EmployeeNode* emp : foundEmployees) {
+                            std::cout << "ID: " << emp->id 
+                                      << ", Name: " << emp->name 
+                                      << ", Position: " << emp->position << "\n";
+                        }
+                    }
+                } else {
+                    std::cout << "No company exists.\n";
+                }
+                break;
+            }
+            case 4: {
+                int searchId;
+                std::cout << "Enter ID to search: ";
+                std::cin >> searchId;
+
+                if (ceo) {
+                    EmployeeNode* foundEmployee = ceo->findById(searchId);
+                    if (foundEmployee) {
+                        std::cout << "Employee found: ID: " << foundEmployee->id 
+                                  << ", Name: " << foundEmployee->name 
+                                  << ", Position: " << foundEmployee->position << "\n";
+                    } else {
+                        std::cout << "No employee found with that ID.\n";
+                    }
+                } else {
+                    std::cout << "No company exists.\n";
+                }
+                break;
+            }
+            case 5: {
+                int deleteId;
+                std::cout << "Enter ID of the employee to delete: ";
+                std::cin >> deleteId;
+
+                if (ceo && ceo->deleteEmployee(deleteId)) {
+                    std::cout << "Employee deleted successfully.\n";
+                } else {
+                    std::cout << "Employee not found or no company exists.\n";
+                }
+                break;
+            }
+            case 6: {
+                if (ceo) {
+                    std::cout << "\nCompany Hierarchy:\n";
+                    ceo->displayHierarchy();
+                } else {
+                    std::cout << "No company exists.\n";
+                }
+                break;
+            }
+            case 7: {
+                int promoteId;
+                std::string newPosition;
+                std::cout << "Enter ID of the employee to promote: ";
+                std::cin >> promoteId;
+                std::cin.ignore();
+                std::cout << "Enter new position: ";
+                std::getline(std::cin, newPosition);
+
+                if (ceo && ceo->updateEmployee(promoteId, "", newPosition)) {
+                    std::cout << "Employee promoted successfully.\n";
+                } else {
+                    std::cout << "Employee not found or no company exists.\n";
+                }
+                break;
+            }
+            case 8: {
+                int demoteId;
+                std::string newPosition;
+                std::cout << "Enter ID of the employee to demote: ";
+                std::cin >> demoteId;
+                std::cin.ignore();
+                std::cout << "Enter new position: ";
+                std::getline(std::cin, newPosition);
+
+                if (ceo && ceo->updateEmployee(demoteId, "", newPosition)) {
+                    std::cout << "Employee demoted successfully.\n";
+                } else {
+                    std::cout << "Employee not found or no company exists.\n";
+                }
+                break;
+            }
+            case 0:
+                std::cout << "Exiting...\n";
+                break;
+            default:
+                std::cout << "Invalid choice. Try again.\n";
         }
-    }
-    
-    // Use findById to search for an employee by ID
-    int idToSearch = 4;
-    EmployeeNode* foundEmployee = ceo->findById(idToSearch);
-
-    // Display results of the search
-    std::cout << "\nSearch Results:\n";
-    if (foundEmployee) {
-        std::cout << "Employee found:\n";
-        std::cout << "ID: " << foundEmployee->id 
-                  << ", Name: " << foundEmployee->name 
-                  << ", Position: " << foundEmployee->position << "\n";
-    } else {
-        std::cout << "No employee found with ID: " << idToSearch << "\n";
-    }
-
-        // Call deleteEmployee to remove an employee with ID 4 (Engineer Charlie)
-    int idToDelete = 4;
-    if (ceo->deleteEmployee(idToDelete)) {
-        std::cout << "\nEmployee with ID " << idToDelete << " has been deleted.\n";
-    } else {
-        std::cout << "\nEmployee with ID " << idToDelete << " not found.\n";
-    }
-
-    // Display hierarchy after deletion
-    std::cout << "\nCompany Hierarchy (After Deletion):\n";
-    ceo->displayHierarchy();
+    } while (operation != 0);
 
     // Clean up memory
     delete ceo;
