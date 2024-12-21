@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 class EmployeeNode {
 public:
@@ -106,6 +107,27 @@ public:
             delete subordinate;
         }
     }
+
+    // Function to write all employee information to a file
+    void writeEmployeeInfoToFile(const std::string& filename) {
+        std::ofstream outFile(filename);
+        if (!outFile) {
+            std::cerr << "Error opening file for writing.\n";
+            return;
+        }
+        writeEmployeeInfo(outFile);
+        outFile.close();
+    }
+
+    // Helper function to recursively write employee information
+    void writeEmployeeInfo(std::ofstream& outFile, int level = 0) {
+        for (int i = 0; i < level; ++i) outFile << "  ";
+        outFile << position << " (ID: " << id << "): " << name << "\n";
+
+        for (EmployeeNode* subordinate : subordinates) {
+            subordinate->writeEmployeeInfo(outFile, level + 1);
+        }
+    }
 };
 
 int main() {
@@ -122,6 +144,8 @@ int main() {
         std::cout << "6. Display Hierarchy\n";
         std::cout << "7. Promote Employee\n";
         std::cout << "8. Demote Employee\n";
+        std::cout << "9. Write Employee Information to File\n";
+        std::cout << "10. Add Subordinate\n";
         std::cout << "0. Exit\n";
         std::cout << "Enter your choice: ";
         std::cin >> operation;
@@ -300,6 +324,49 @@ int main() {
                     std::cout << "Employee demoted successfully.\n";
                 } else {
                     std::cout << "Employee not found or no company exists.\n";
+                }
+                break;
+            }
+            case 9: { // Write Employee Information to File
+                if (ceo) {
+                    std::string filename;
+                    std::cout << "Enter filename to save employee information: ";
+                    std::cin >> filename;
+
+                    ceo->writeEmployeeInfoToFile(filename);
+                    std::cout << "Employee information written to " << filename << " successfully.\n";
+                } else {
+                    std::cout << "No company exists.\n";
+                }
+                break; // Ensure you have a break here
+            }
+            case 10: {
+                int supervisorId;
+                std::cout << "Enter ID of the supervisor: ";
+                std::cin >> supervisorId;
+
+                if (ceo) {
+                    EmployeeNode* supervisor = ceo->findById(supervisorId);
+                    if (supervisor) {
+                        int subId;
+                        std::string subName, subPosition;
+                        std::cout << "Enter details for the new subordinate:\n";
+                        std::cout << "ID: ";
+                        std::cin >> subId;
+                        std::cin.ignore(); // Clear newline from input buffer
+                        std::cout << "Name: ";
+                        std::getline(std::cin, subName);
+                        std::cout << "Position: ";
+                        std::getline(std::cin, subPosition);
+
+                        EmployeeNode* subordinate = new EmployeeNode(subId, subName, subPosition);
+                        supervisor->addSubordinate(subordinate);
+                        std::cout << "Subordinate added successfully.\n";
+                    } else {
+                        std::cout << "Supervisor not found.\n";
+                    }
+                } else {
+                    std::cout << "No company exists.\n";
                 }
                 break;
             }
