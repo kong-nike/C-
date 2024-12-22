@@ -135,7 +135,8 @@ enum ActionType {
     ADD_SUBORDINATE,
     PROMOTE,
     DEMOTE,
-    DELETE
+    DELETE,
+    UPDATE
 };
 
 // Function to manage employee actions
@@ -165,6 +166,15 @@ bool manageEmployee(EmployeeNode* ceo, ActionType action, int id, const std::str
         }
         case DELETE: {
             return ceo && ceo->deleteEmployee(id);
+        }
+        case UPDATE: {
+            int updateId = id;
+            if (ceo && ceo->updateEmployee(updateId, newName, newPosition)) {
+                std::cout << "Employee updated successfully.\n";
+            } else {
+                std::cout << "Employee not found.\n";
+            }
+            return true;
         }
         default:
             return false;
@@ -232,11 +242,10 @@ int main() {
     do {
         std::cout << "\nChoose an operation:\n";
         std::cout << "1. Create Company\n";
-        std::cout << "2. Update Employee\n";
-        std::cout << "3. Search Employee (by ID or Position)\n";
-        std::cout << "4. Display Hierarchy\n";
-        std::cout << "5. Write Employee Information to File\n";
-        std::cout << "6. Manage Employee (Add, Promote, Demote, Delete)\n";
+        std::cout << "2. Search Employee (by ID or Position)\n";
+        std::cout << "3. Display Hierarchy\n";
+        std::cout << "4. Write Employee Information to File\n";
+        std::cout << "5. Manage Employee (Add, Promote, Demote, Delete, Update)\n";
         std::cout << "0. Exit\n";
         std::cout << "Enter your choice: ";
         std::cin >> operation;
@@ -304,28 +313,10 @@ int main() {
                 break;
             }
             case 2: {
-                int updateId;
-                std::string newName, newPosition;
-                std::cout << "Enter ID of the employee to update: ";
-                std::cin >> updateId;
-                std::cin.ignore();
-                std::cout << "Enter new name (or leave empty): ";
-                std::getline(std::cin, newName);
-                std::cout << "Enter new position (or leave empty): ";
-                std::getline(std::cin, newPosition);
-
-                if (ceo && ceo->updateEmployee(updateId, newName, newPosition)) {
-                    std::cout << "Employee updated successfully.\n";
-                } else {
-                    std::cout << "Employee not found.\n";
-                }
-                break;
-            }
-            case 3: {
                 searchEmployee(ceo);
                 break;
             }
-            case 4: {
+            case 3: {
                 if (ceo) {
                     std::cout << "\nCompany Hierarchy:\n";
                     ceo->displayHierarchy();
@@ -334,7 +325,7 @@ int main() {
                 }
                 break;
             }
-            case 5: {
+            case 4: {
                 if (ceo) {
                     std::string filename;
                     std::cout << "Enter filename to save employee information: ";
@@ -347,13 +338,14 @@ int main() {
                 }
                 break;
             }
-            case 6: {
+            case 5: {
                 int actionChoice;
                 std::cout << "Choose an action:\n";
                 std::cout << "1. Add Subordinate\n";
                 std::cout << "2. Promote Employee\n";
                 std::cout << "3. Demote Employee\n";
                 std::cout << "4. Delete Employee\n";
+                std::cout << "5. Update Employee\n";
                 std::cout << "Enter your choice: ";
                 std::cin >> actionChoice;
 
@@ -413,6 +405,20 @@ int main() {
                         } else {
                             std::cout << "Employee not found or deletion failed.\n";
                         }
+                        break;
+                    }
+                    case 5: {
+                        int updateId;
+                        std::string newName, newPosition;
+                        std::cout << "Enter ID of the employee to update: ";
+                        std::cin >> updateId;
+                        std::cin.ignore();
+                        std::cout << "Enter new name (or leave empty): ";
+                        std::getline(std::cin, newName);
+                        std::cout << "Enter new position (or leave empty): ";
+                        std::getline(std::cin, newPosition);
+
+                        manageEmployee(ceo, UPDATE, updateId, newName, newPosition);
                         break;
                     }
                     default:
