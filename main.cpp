@@ -240,7 +240,11 @@ int main() {
     int operation;
 
     do {
-        std::cout << "\nChoose an operation:\n";
+        std::cout << "+======================================+\n";
+        std::cout << "|           H I E R A R C H Y          |\n";
+        std::cout << "|             S Y S T E A M            |\n";
+        std::cout << "+======================================+";
+        std::cout << "\nChoose an operation\n";
         std::cout << "1. Create Company\n";
         std::cout << "2. Search Employee (by ID or Position)\n";
         std::cout << "3. Display Hierarchy\n";
@@ -255,8 +259,10 @@ int main() {
                 if (ceo) {
                     delete ceo;
                 }
-
-                std::cout << "Enter Company details:\n";
+                std::cout << "+======================================+\n";
+                std::cout << "|         Enter Company details        |\n";
+                std::cout << "+======================================+\n";
+                std::cout << "Enter Company Information\n";
                 int memberId;
                 std::string memberName, memberPosition;
                 std::cout << "ID: ";
@@ -313,12 +319,17 @@ int main() {
                 break;
             }
             case 2: {
+                std::cout << "+======================================+\n";
+                std::cout << "|                Employee              |\n";
+                std::cout << "+======================================+\n";
                 searchEmployee(ceo);
                 break;
             }
             case 3: {
+                std::cout << "+======================================+\n";
+                std::cout << "|          Company Hierarchy           |\n";
+                std::cout << "+======================================+\n";
                 if (ceo) {
-                    std::cout << "\nCompany Hierarchy:\n";
                     ceo->displayHierarchy();
                 } else {
                     std::cout << "No company exists.\n";
@@ -340,7 +351,10 @@ int main() {
             }
             case 5: {
                 int actionChoice;
-                std::cout << "Choose an action:\n";
+                std::cout << "+======================================+\n";
+                std::cout << "|     management information system    |\n";
+                std::cout << "+======================================+\n";
+                std::cout << "Choose an action\n";
                 std::cout << "1. Add Subordinate\n";
                 std::cout << "2. Promote Employee\n";
                 std::cout << "3. Demote Employee\n";
@@ -355,6 +369,9 @@ int main() {
 
                 switch (actionChoice) {
                     case 1: {
+                        std::cout << "+======================================+\n";
+                        std::cout << "|            Add Subordinate           |\n";
+                        std::cout << "+======================================+\n";
                         std::cout << "Enter ID of the subordinate: ";
                         std::cin >> id;
                         std::cin.ignore(); // Clear newline
@@ -369,6 +386,9 @@ int main() {
                         break;
                     }
                     case 2: {
+                        std::cout << "+======================================+\n";
+                        std::cout << "|            Promote Employee          |\n";
+                        std::cout << "+======================================+\n";
                         std::cout << "Enter ID of the employee to promote: ";
                         std::cin >> id;
                         std::cin.ignore();
@@ -383,6 +403,9 @@ int main() {
                         break;
                     }
                     case 3: {
+                        std::cout << "+======================================+\n";
+                        std::cout << "|             Demote Employee          |\n";
+                        std::cout << "+======================================+\n";
                         std::cout << "Enter ID of the employee to demote: ";
                         std::cin >> id;
                         std::cin.ignore();
@@ -397,6 +420,9 @@ int main() {
                         break;
                     }
                     case 4: {
+                        std::cout << "+======================================+\n";
+                        std::cout << "|            Delete Employee           |\n";
+                        std::cout << "+======================================+\n";
                         std::cout << "Enter ID of the employee to delete: ";
                         std::cin >> id;
 
@@ -408,6 +434,9 @@ int main() {
                         break;
                     }
                     case 5: {
+                        std::cout << "+======================================+\n";
+                        std::cout << "|             Update Employee          |\n";
+                        std::cout << "+======================================+\n";
                         int updateId;
                         std::string newName, newPosition;
                         std::cout << "Enter ID of the employee to update: ";
