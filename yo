@@ -240,16 +240,17 @@ int main() {
     int operation;
 
     do {
+        system("cls");
         std::cout << "+======================================+\n";
         std::cout << "|           H I E R A R C H Y          |\n";
         std::cout << "|             S Y S T E A M            |\n";
         std::cout << "+======================================+";
         std::cout << "\nChoose an operation\n";
         std::cout << "1. Create Company\n";
-        std::cout << "2. Search Employee\n";
+        std::cout << "2. Search Employee \n";
         std::cout << "3. Display Hierarchy\n";
         std::cout << "4. Write Employee Information to File\n";
-        std::cout << "5. Manage Employee\n";
+        std::cout << "5. Manage Employee \n";
         std::cout << "0. Exit\n";
         std::cout << "Enter your choice: ";
         std::cin >> operation;
@@ -259,6 +260,7 @@ int main() {
                 if (ceo) {
                     delete ceo;
                 }
+                system("cls");
                 std::cout << "+======================================+\n";
                 std::cout << "|         Enter Company details        |\n";
                 std::cout << "+======================================+\n";
@@ -319,6 +321,7 @@ int main() {
                 break;
             }
             case 2: {
+                system("cls");
                 std::cout << "+======================================+\n";
                 std::cout << "|                Employee              |\n";
                 std::cout << "+======================================+\n";
@@ -326,6 +329,7 @@ int main() {
                 break;
             }
             case 3: {
+                system("cls");
                 std::cout << "+======================================+\n";
                 std::cout << "|          Company Hierarchy           |\n";
                 std::cout << "+======================================+\n";
@@ -338,6 +342,7 @@ int main() {
             }
             case 4: {
                 if (ceo) {
+                    system("cls");
                     std::string filename;
                     std::cout << "Enter filename to save employee information: ";
                     std::cin >> filename;
@@ -350,6 +355,7 @@ int main() {
                 break;
             }
             case 5: {
+                system("cls");
                 int actionChoice;
                 std::cout << "+======================================+\n";
                 std::cout << "|     management information system    |\n";
@@ -369,6 +375,7 @@ int main() {
 
                 switch (actionChoice) {
                     case 1: {
+                        system("cls");
                         std::cout << "+======================================+\n";
                         std::cout << "|            Add Subordinate           |\n";
                         std::cout << "+======================================+\n";
@@ -386,6 +393,7 @@ int main() {
                         break;
                     }
                     case 2: {
+                        system("cls");
                         std::cout << "+======================================+\n";
                         std::cout << "|            Promote Employee          |\n";
                         std::cout << "+======================================+\n";
@@ -403,6 +411,7 @@ int main() {
                         break;
                     }
                     case 3: {
+                        system("cls");
                         std::cout << "+======================================+\n";
                         std::cout << "|             Demote Employee          |\n";
                         std::cout << "+======================================+\n";
@@ -420,6 +429,7 @@ int main() {
                         break;
                     }
                     case 4: {
+                        system("cls");
                         std::cout << "+======================================+\n";
                         std::cout << "|            Delete Employee           |\n";
                         std::cout << "+======================================+\n";
@@ -434,6 +444,7 @@ int main() {
                         break;
                     }
                     case 5: {
+                        system("cls");
                         std::cout << "+======================================+\n";
                         std::cout << "|             Update Employee          |\n";
                         std::cout << "+======================================+\n";
@@ -456,6 +467,7 @@ int main() {
                 break;
             }
             case 0:
+                system("cls");
                 std::cout << "Exiting...\n";
                 break;
             default:
